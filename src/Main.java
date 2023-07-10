@@ -14,7 +14,7 @@ public class Main {
 
         Main app = new Main();
 
-        String fileName = "hht.txt";
+        String fileName = "MuleTemplate\\hht.txt";
 
         System.out.println("\ngetResource : " + fileName);
         File file = app.getFileFromResource(fileName);
