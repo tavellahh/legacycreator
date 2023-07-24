@@ -12,34 +12,35 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Main app = new Main();
-
-        String fileName = "MuleTemplate\\hht.txt";
-
-        System.out.println("\ngetResource : " + fileName);
-        File file = app.getFileFromResource(fileName);
-        printFile(file);
-
-        // Buscar y reemplazar texto en el archivo
-        String searchText = "hola";
-        String replaceText = "Replacement";
-        String destinationPath = "C:\\Users\\Hernan\\destination.txt"; // Ruta de destino del archivo modificado
-
-        app.searchAndReplaceInFile(file, searchText, replaceText, destinationPath);
+//        Main app = new Main();
+//        String fileName = "MuleTemplate\\hht.txt";
+//        File file = app.getFileFromResource(fileName);
+//        printFile(file);
+//
+//        // Buscar y reemplazar texto en el archivo
+//        String searchText = "hola";
+//        String replaceText = "Replacement";
+//        String destinationPath = "C:\\Users\\p046456\\Downloads\\destination.txt"; // Ruta de destino del archivo modificado
+//
+//        app.searchAndReplaceInFile(file, searchText, replaceText, destinationPath);
+    	Main app = new Main();
+    	
+    	String nombreLegacy = "et02"; 
+    	String folderLegacy = "C:\\MIGRACION\\legacy-"+nombreLegacy;
+        copyDirectory("C:\\MIGRACION\\legacy-LLLL", folderLegacy);
+        
+        
+        //POM
+    	String pomPath = folderLegacy + "\\pom.xml";
+        File pomFile = new File(pomPath);
+        String pomSearch = "PPPP";
+        String pomReplace = nombreLegacy;
+        searchAndReplaceInFile(pomFile, pomSearch, pomReplace, pomPath);
+        
+        
     }
 
  
-    private File getFileFromResource(String fileName) throws URISyntaxException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-
-        if (resource == null) {
-            throw new IllegalArgumentException("File not found! " + fileName);
-        } else {
-            return new File(resource.toURI());
-        }
-    }
-
     private static void printInputStream(InputStream is) {
         try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(streamReader)) {
@@ -53,7 +54,7 @@ public class Main {
         }
     }
 
-    private static void printFile(File file) {
+    private static void printFisle(File file) {
         List<String> lines;
         try {
             lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
@@ -63,7 +64,7 @@ public class Main {
         }
     }
 
-    private void searchAndReplaceInFile(File file, String searchText, String replaceText, String destinationPath) {
+    private static void searchAndReplaceInFile(File file, String searchText, String replaceText, String destinationPath) {
         try {
             List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
 
@@ -82,4 +83,19 @@ public class Main {
             e.printStackTrace();
         }
     }
+    
+    public static void copyDirectory(String sourceDirectoryLocation, String destinationDirectoryLocation) 
+    		  throws IOException {
+    		    Files.walk(Paths.get(sourceDirectoryLocation))
+    		      .forEach(source -> {
+    		          Path destination = Paths.get(destinationDirectoryLocation, source.toString()
+    		            .substring(sourceDirectoryLocation.length()));
+    		          try {
+    		              Files.copy(source, destination);
+    		          } catch (IOException e) {
+    		              e.printStackTrace();
+    		          }
+    		      });
+    		}
+
 }
